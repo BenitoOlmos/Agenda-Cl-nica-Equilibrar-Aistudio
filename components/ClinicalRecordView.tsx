@@ -172,6 +172,21 @@ const ClinicalRecordView: React.FC<ClinicalRecordViewProps> = ({ patient, curren
         </div>
       </div>
 
+      {/* Patient Access Info */}
+      <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+        <h3 className="text-sm font-medium text-slate-500 uppercase tracking-wider mb-3">Credenciales de Acceso (Portal Paciente)</h3>
+        <div className="flex flex-col md:flex-row gap-6">
+            <div className="flex-1 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <p className="text-xs text-slate-500 mb-1">Usuario (Correo Electrónico)</p>
+                <p className="font-mono text-slate-800 font-medium">{patient.email}</p>
+            </div>
+            <div className="flex-1 bg-slate-50 p-4 rounded-xl border border-slate-100">
+                <p className="text-xs text-slate-500 mb-1">Contraseña Temporal</p>
+                <p className="font-mono text-slate-800 font-medium">{patient.password || 'No generada'}</p>
+            </div>
+        </div>
+      </div>
+
       {/* New Entry Form */}
       {showNewEntryForm && (
         <div className="bg-slate-50 p-6 rounded-2xl border border-brand-blue/20 shadow-sm animate-in fade-in slide-in-from-top-4">

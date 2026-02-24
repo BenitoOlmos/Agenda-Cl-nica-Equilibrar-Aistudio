@@ -11,6 +11,18 @@ const PaymentList: React.FC<PaymentListProps> = ({ currentUser }) => {
   const [payments, setPayments] = useState<any[]>([]);
   const [filter, setFilter] = useState<'ALL' | 'PAID' | 'PENDING'>('ALL');
   const [selectedPatientId, setSelectedPatientId] = useState<string | null>(null);
+  
+  // Date Filter State
+  const currentDate = new Date();
+  const [selectedMonth, setSelectedMonth] = useState(currentDate.getMonth());
+  const [selectedYear, setSelectedYear] = useState(currentDate.getFullYear());
+
+  const months = [
+    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
+    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre'
+  ];
+
+  const years = Array.from({ length: 5 }, (_, i) => currentDate.getFullYear() - 2 + i);
 
   useEffect(() => {
     // Simulate fetching payments from appointments
@@ -41,6 +53,10 @@ const PaymentList: React.FC<PaymentListProps> = ({ currentUser }) => {
   }, []);
 
   const filteredPayments = payments.filter(p => {
+    const paymentDate = new Date(p.date);
+    const matchesDate = paymentDate.getMonth() === selectedMonth && paymentDate.getFullYear() === selectedYear;
+    
+    if (!matchesDate) return false;
     if (selectedPatientId && p.patientId !== selectedPatientId) return false;
     if (filter === 'ALL') return true;
     return p.status === filter;
@@ -75,25 +91,51 @@ const PaymentList: React.FC<PaymentListProps> = ({ currentUser }) => {
           <p className="text-slate-500">Registro de transacciones y estados de pago</p>
         </div>
         
-        <div className="flex gap-2 bg-slate-100 p-1 rounded-lg">
-          <button 
-            onClick={() => setFilter('ALL')}
-            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'ALL' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
-          >
-            Todos
-          </button>
-          <button 
-            onClick={() => setFilter('PAID')}
-            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'PAID' ? 'bg-white shadow-sm text-green-700' : 'text-slate-500 hover:text-slate-700'}`}
-          >
-            Pagados
-          </button>
-          <button 
-            onClick={() => setFilter('PENDING')}
-            className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'PENDING' ? 'bg-white shadow-sm text-yellow-700' : 'text-slate-500 hover:text-slate-700'}`}
-          >
-            Pendientes
-          </button>
+        <div className="flex flex-wrap gap-3 items-center">
+            {/* Date Filters */}
+            <div className="flex gap-2 bg-white p-1 rounded-lg border border-slate-200 shadow-sm">
+                <select 
+                    value={selectedMonth} 
+                    onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                    className="bg-transparent text-sm font-medium text-slate-700 outline-none cursor-pointer"
+                >
+                    {months.map((month, index) => (
+                        <option key={month} value={index}>{month}</option>
+                    ))}
+                </select>
+                <div className="w-px bg-slate-200"></div>
+                <select 
+                    value={selectedYear} 
+                    onChange={(e) => setSelectedYear(Number(e.target.value))}
+                    className="bg-transparent text-sm font-medium text-slate-700 outline-none cursor-pointer"
+                >
+                    {years.map(year => (
+                        <option key={year} value={year}>{year}</option>
+                    ))}
+                </select>
+            </div>
+
+            {/* Status Filters */}
+            <div className="flex gap-2 bg-slate-100 p-1 rounded-lg">
+            <button 
+                onClick={() => setFilter('ALL')}
+                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'ALL' ? 'bg-white shadow-sm text-slate-900' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+                Todos
+            </button>
+            <button 
+                onClick={() => setFilter('PAID')}
+                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'PAID' ? 'bg-white shadow-sm text-green-700' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+                Pagados
+            </button>
+            <button 
+                onClick={() => setFilter('PENDING')}
+                className={`px-3 py-1.5 text-sm font-medium rounded-md transition-all ${filter === 'PENDING' ? 'bg-white shadow-sm text-yellow-700' : 'text-slate-500 hover:text-slate-700'}`}
+            >
+                Pendientes
+            </button>
+            </div>
         </div>
       </div>
 

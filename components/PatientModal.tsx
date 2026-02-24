@@ -44,9 +44,25 @@ const PatientModal: React.FC<PatientModalProps> = ({ isOpen, onClose, onSave, pa
 
   if (!isOpen) return null;
 
+  const generatePassword = () => {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%';
+    let password = '';
+    for (let i = 0; i < 10; i++) {
+      password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSave(formData);
+    const dataToSave = { ...formData };
+    
+    // Si es un paciente nuevo (no tiene ID o no se está editando un paciente existente), generar contraseña
+    if (!patient && !dataToSave.password) {
+        dataToSave.password = generatePassword();
+    }
+    
+    onSave(dataToSave);
   };
 
   return (

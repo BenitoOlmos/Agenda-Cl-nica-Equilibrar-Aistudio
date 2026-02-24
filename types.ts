@@ -59,6 +59,7 @@ export interface Patient {
   isapreName?: string; // Solo si es ISAPRE
   complementaryInsurance?: string;
   paymentIds?: string[]; // Vínculo a pagos generados
+  password?: string; // Contraseña generada automáticamente
 }
 
 // Ficha Clínica (Ley N° 20.584)

@@ -266,7 +266,8 @@ export const PATIENTS: Patient[] = [
     commune: 'Providencia',
     healthSystem: 'ISAPRE',
     isapreName: 'Colmena',
-    complementaryInsurance: 'Seguros BCI'
+    complementaryInsurance: 'Seguros BCI',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-2',
@@ -278,7 +279,8 @@ export const PATIENTS: Patient[] = [
     phone: '+56 9 1111 2222',
     address: 'Calle Falsa 123',
     commune: 'Santiago',
-    healthSystem: 'FONASA'
+    healthSystem: 'FONASA',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-3',
@@ -291,7 +293,8 @@ export const PATIENTS: Patient[] = [
     address: 'Los Leones 456',
     commune: 'Providencia',
     healthSystem: 'ISAPRE',
-    isapreName: 'Cruz Blanca'
+    isapreName: 'Cruz Blanca',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-4',
@@ -303,7 +306,8 @@ export const PATIENTS: Patient[] = [
     phone: '+56 9 5555 6666',
     address: 'Alameda 789',
     commune: 'Santiago',
-    healthSystem: 'FONASA'
+    healthSystem: 'FONASA',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-5',
@@ -315,7 +319,8 @@ export const PATIENTS: Patient[] = [
     phone: '+56 9 7777 8888',
     address: 'Vitacura 321',
     commune: 'Vitacura',
-    healthSystem: 'PARTICULAR'
+    healthSystem: 'PARTICULAR',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-6',
@@ -328,7 +333,8 @@ export const PATIENTS: Patient[] = [
     address: 'Las Condes 654',
     commune: 'Las Condes',
     healthSystem: 'ISAPRE',
-    isapreName: 'Banmédica'
+    isapreName: 'Banmédica',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-7',
@@ -340,7 +346,8 @@ export const PATIENTS: Patient[] = [
     phone: '+56 9 1212 3434',
     address: 'Irarrázaval 987',
     commune: 'Ñuñoa',
-    healthSystem: 'FONASA'
+    healthSystem: 'FONASA',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-8',
@@ -352,7 +359,8 @@ export const PATIENTS: Patient[] = [
     phone: '+56 9 5656 7878',
     address: 'Vicuña Mackenna 111',
     commune: 'La Florida',
-    healthSystem: 'FONASA'
+    healthSystem: 'FONASA',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-9',
@@ -365,7 +373,8 @@ export const PATIENTS: Patient[] = [
     address: 'Pajaritos 222',
     commune: 'Maipú',
     healthSystem: 'ISAPRE',
-    isapreName: 'Consalud'
+    isapreName: 'Consalud',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-10',
@@ -377,7 +386,8 @@ export const PATIENTS: Patient[] = [
     phone: '+56 9 2323 4545',
     address: 'Gran Avenida 333',
     commune: 'San Miguel',
-    healthSystem: 'FONASA'
+    healthSystem: 'FONASA',
+    password: 'TempPassword123'
   },
   {
     id: 'pt-11',
@@ -389,7 +399,8 @@ export const PATIENTS: Patient[] = [
     phone: '+56 9 6767 8989',
     address: 'Apoquindo 444',
     commune: 'Las Condes',
-    healthSystem: 'PARTICULAR'
+    healthSystem: 'PARTICULAR',
+    password: 'TempPassword123'
   }
 ];
 
