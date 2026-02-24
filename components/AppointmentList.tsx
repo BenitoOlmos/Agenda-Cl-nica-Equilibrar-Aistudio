@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Appointment, Role, User, AppointmentStatus, Patient, PaymentStatus } from '../types';
 import { getAppointments, SERVICES, USERS, PATIENTS } from '../services/mockData';
-import { Clock, Video, MapPin, CheckCircle, X, Calendar, List, Ban } from 'lucide-react';
+import { Clock, Video, MapPin, CheckCircle, X, Calendar, List, Ban, Plus } from 'lucide-react';
 import CalendarView from './CalendarView';
 import ClinicalRecordView from './ClinicalRecordView';
 import BlockTimeModal from './BlockTimeModal';
+import AppointmentModal from './AppointmentModal';
 
 interface AppointmentListProps {
   currentUser: User;
@@ -15,6 +16,9 @@ const AppointmentList: React.FC<AppointmentListProps> = ({ currentUser }) => {
   const [viewMode, setViewMode] = useState<'LIST' | 'CALENDAR'>('CALENDAR');
   const [selectedPatientForRecord, setSelectedPatientForRecord] = useState<Patient | null>(null);
   const [isBlockModalOpen, setIsBlockModalOpen] = useState(false);
+  const [isAppointmentModalOpen, setIsAppointmentModalOpen] = useState(false);
+
+  const [editingAppointment, setEditingAppointment] = useState<Appointment | null>(null);
 
   useEffect(() => {
     getAppointments().then(data => {
@@ -48,8 +52,9 @@ const AppointmentList: React.FC<AppointmentListProps> = ({ currentUser }) => {
             setSelectedPatientForRecord(patient);
         }
     } else {
-        // For admins/coordinators, maybe show details modal (not implemented yet)
-        alert(`Cita: ${apt.id} - ${apt.status}`);
+        // For admins/coordinators, open edit modal
+        setEditingAppointment(apt);
+        setIsAppointmentModalOpen(true);
     }
   };
 
@@ -70,6 +75,30 @@ const AppointmentList: React.FC<AppointmentListProps> = ({ currentUser }) => {
 
     setAppointments([...appointments, newBlockedSlot]);
     setIsBlockModalOpen(false);
+  };
+
+  const handleSaveAppointment = (appointmentData: Partial<Appointment>) => {
+    if (appointmentData.id) {
+        // Update existing
+        setAppointments(appointments.map(apt => apt.id === appointmentData.id ? { ...apt, ...appointmentData } as Appointment : apt));
+    } else {
+        // Create new
+        const newAppointment: Appointment = {
+          id: `apt-${Date.now()}`,
+          patientId: appointmentData.patientId!,
+          specialistId: appointmentData.specialistId!,
+          serviceId: appointmentData.serviceId!,
+          dateStart: appointmentData.dateStart!,
+          dateEnd: appointmentData.dateEnd!,
+          status: AppointmentStatus.PENDING,
+          paymentStatus: appointmentData.paymentStatus || PaymentStatus.PENDING,
+          paymentMethod: appointmentData.paymentMethod,
+          notes: appointmentData.notes
+        };
+        setAppointments([...appointments, newAppointment]);
+    }
+    setIsAppointmentModalOpen(false);
+    setEditingAppointment(null);
   };
 
   if (selectedPatientForRecord) {
@@ -115,12 +144,17 @@ const AppointmentList: React.FC<AppointmentListProps> = ({ currentUser }) => {
               </button>
             )}
 
-            {/* Solo coordinadores y administradores suelen agendar manualmente en el dashboard principal en este diseño simplificado */}
-            {(currentUser.role === Role.ADMIN || currentUser.role === Role.COORDINATOR) && (
-                <button className="bg-brand-accent text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-600 transition-colors shadow-sm shadow-teal-200">
-                + Nueva Cita
-                </button>
-            )}
+            {/* Botón Nueva Cita para todos (o restringido según lógica de negocio) */}
+            <button 
+              onClick={() => {
+                  setEditingAppointment(null);
+                  setIsAppointmentModalOpen(true);
+              }}
+              className="flex items-center gap-2 bg-brand-accent text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-teal-600 transition-colors shadow-sm shadow-teal-200"
+            >
+              <Plus size={16} />
+              Nueva Cita
+            </button>
         </div>
       </div>
 
@@ -215,6 +249,19 @@ const AppointmentList: React.FC<AppointmentListProps> = ({ currentUser }) => {
           isOpen={isBlockModalOpen} 
           onClose={() => setIsBlockModalOpen(false)} 
           onBlock={handleBlockTime} 
+        />
+      )}
+
+      {isAppointmentModalOpen && (
+        <AppointmentModal
+          isOpen={isAppointmentModalOpen}
+          onClose={() => {
+              setIsAppointmentModalOpen(false);
+              setEditingAppointment(null);
+          }}
+          onSave={handleSaveAppointment}
+          currentUser={currentUser}
+          appointment={editingAppointment}
         />
       )}
     </div>

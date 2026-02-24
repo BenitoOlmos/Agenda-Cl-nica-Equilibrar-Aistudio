@@ -11,7 +11,7 @@ interface CalendarViewProps {
   onAppointmentClick: (appointment: Appointment) => void;
 }
 
-const HOURS = Array.from({ length: 12 }, (_, i) => i + 9); // 9:00 to 20:00
+const HOURS = Array.from({ length: 14 }, (_, i) => i + 8); // 8:00 to 21:00
 const DAYS = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
 
 const CalendarView: React.FC<CalendarViewProps> = ({ 
@@ -73,12 +73,16 @@ const CalendarView: React.FC<CalendarViewProps> = ({
     const endHour = endDate.getHours();
     const endMin = endDate.getMinutes();
 
-    const startMinutesFrom9 = (startHour - 9) * 60 + startMin;
+    // Start from 8:00 (8 * 60 = 480 minutes)
+    const startMinutesFrom8 = (startHour - 8) * 60 + startMin;
     const durationMinutes = (endHour * 60 + endMin) - (startHour * 60 + startMin);
     
-    // Total minutes from 9:00 to 20:00 is 11 * 60 = 660
-    const top = (startMinutesFrom9 / 660) * 100;
-    const height = (durationMinutes / 660) * 100;
+    // Total minutes from 8:00 to 21:00 is 13 * 60 = 780
+    // We use a slightly larger range to ensure 21:00 fits comfortably
+    const totalMinutes = 13 * 60; 
+
+    const top = (startMinutesFrom8 / totalMinutes) * 100;
+    const height = (durationMinutes / totalMinutes) * 100;
 
     return {
       top: `${top}%`,
@@ -127,9 +131,9 @@ const CalendarView: React.FC<CalendarViewProps> = ({
         {/* Time Column */}
         <div className="w-16 flex-shrink-0 bg-slate-50 border-r border-slate-200">
           <div className="h-12 border-b border-slate-200"></div> {/* Header spacer */}
-          <div className="relative h-[1100px]"> {/* Fixed height for scrolling */}
+          <div className="relative h-[1300px]"> {/* Increased height for better spacing */}
             {HOURS.map(hour => (
-              <div key={hour} className="absolute w-full text-right pr-2 text-xs text-slate-400 -mt-2" style={{ top: `${((hour - 9) / 11) * 100}%` }}>
+              <div key={hour} className="absolute w-full text-right pr-2 text-xs text-slate-400 -mt-2" style={{ top: `${((hour - 8) / 13) * 100}%` }}>
                 {hour}:00
               </div>
             ))}
@@ -155,10 +159,10 @@ const CalendarView: React.FC<CalendarViewProps> = ({
                 </div>
 
                 {/* Day Grid */}
-                <div className="relative h-[1100px]">
+                <div className="relative h-[1300px]">
                   {/* Grid Lines */}
                   {HOURS.map(hour => (
-                    <div key={hour} className="absolute w-full border-b border-slate-50" style={{ top: `${((hour - 9) / 11) * 100}%` }}></div>
+                    <div key={hour} className="absolute w-full border-b border-slate-50" style={{ top: `${((hour - 8) / 13) * 100}%` }}></div>
                   ))}
 
                   {/* Appointments */}

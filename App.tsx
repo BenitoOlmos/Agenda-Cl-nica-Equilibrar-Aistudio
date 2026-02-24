@@ -7,6 +7,7 @@ import PatientList from './components/PatientList';
 import SpecialistList from './components/SpecialistList';
 import ServiceList from './components/ServiceList';
 import BranchList from './components/BranchList';
+import PaymentList from './components/PaymentList';
 import { mockLogin } from './services/mockData';
 import { 
   Activity, 
@@ -17,7 +18,7 @@ import {
   Menu, 
   X,
   MapPin
-} from './components/ui/Icons';
+} from 'lucide-react';
 
 function App() {
   const [auth, setAuth] = useState<AuthState>({
@@ -25,7 +26,7 @@ function App() {
     isAuthenticated: false
   });
   
-  const [currentView, setCurrentView] = useState<'DASHBOARD' | 'CALENDAR' | 'CLIENTS' | 'PAYMENTS'>('DASHBOARD');
+  const [currentView, setCurrentView] = useState<'DASHBOARD' | 'CALENDAR' | 'CLIENTS' | 'PAYMENTS' | 'SPECIALISTS' | 'SERVICES' | 'BRANCHES'>('DASHBOARD');
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const handleLogin = async (role: Role) => {
@@ -102,7 +103,7 @@ function App() {
              </>
           )}
           
-          {(auth.user.role === Role.ADMIN) && (
+          {(auth.user.role === Role.ADMIN || auth.user.role === Role.COORDINATOR) && (
             <NavItem view="PAYMENTS" icon={CreditCard} label="Pagos" />
           )}
         </nav>
@@ -169,11 +170,7 @@ function App() {
           )}
 
           {currentView === 'PAYMENTS' && (
-             <div className="bg-white p-12 rounded-2xl shadow-sm text-center border border-slate-100">
-                <CreditCard className="mx-auto h-12 w-12 text-slate-300 mb-4" />
-                <h3 className="text-lg font-medium text-slate-900">Gestión de Pagos</h3>
-                <p className="text-slate-500">Integración Transbank en desarrollo.</p>
-             </div>
+             <PaymentList currentUser={auth.user} />
           )}
         </div>
       </main>

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { Service, ServiceType } from '../types';
+import { Service, ServiceType, Role } from '../types';
 import { X, Save } from 'lucide-react';
+import { USERS, BRANCHES } from '../services/mockData';
 
 interface ServiceModalProps {
   isOpen: boolean;
@@ -15,7 +16,18 @@ const ServiceModal: React.FC<ServiceModalProps> = ({ isOpen, onClose, onSave, se
     durationMinutes: 60,
     price: 0,
     type: ServiceType.PRESENTIAL,
-    description: ''
+    description: '',
+    specialistId: '',
+    branchId: ''
+  });
+
+  const specialists = USERS.filter(u => u.role === Role.PROFESSIONAL);
+  
+  // Filter branches based on service type
+  const availableBranches = BRANCHES.filter(b => {
+    if (formData.type === ServiceType.ONLINE) return b.type === 'VIRTUAL';
+    if (formData.type === ServiceType.PRESENTIAL) return b.type === 'PHYSICAL';
+    return true;
   });
 
   useEffect(() => {
@@ -27,10 +39,24 @@ const ServiceModal: React.FC<ServiceModalProps> = ({ isOpen, onClose, onSave, se
         durationMinutes: 60,
         price: 0,
         type: ServiceType.PRESENTIAL,
-        description: ''
+        description: '',
+        specialistId: '',
+        branchId: ''
       });
     }
   }, [service, isOpen]);
+
+  // Reset branch selection when type changes if current branch is invalid for new type
+  useEffect(() => {
+    const currentBranch = BRANCHES.find(b => b.id === formData.branchId);
+    if (currentBranch) {
+        const isValid = (formData.type === ServiceType.ONLINE && currentBranch.type === 'VIRTUAL') ||
+                        (formData.type === ServiceType.PRESENTIAL && currentBranch.type === 'PHYSICAL');
+        if (!isValid) {
+            setFormData(prev => ({ ...prev, branchId: '' }));
+        }
+    }
+  }, [formData.type]);
 
   if (!isOpen) return null;
 
@@ -98,6 +124,37 @@ const ServiceModal: React.FC<ServiceModalProps> = ({ isOpen, onClose, onSave, se
               <option value={ServiceType.PRESENTIAL}>Presencial</option>
               <option value={ServiceType.ONLINE}>Online</option>
             </select>
+          </div>
+
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Especialista Vinculado</label>
+                <select
+                    required
+                    className="w-full p-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none"
+                    value={formData.specialistId || ''}
+                    onChange={e => setFormData({ ...formData, specialistId: e.target.value })}
+                >
+                    <option value="">Seleccionar...</option>
+                    {specialists.map(spec => (
+                        <option key={spec.id} value={spec.id}>{spec.firstName} {spec.lastName}</option>
+                    ))}
+                </select>
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-slate-700 mb-1">Sucursal Vinculada</label>
+                <select
+                    required
+                    className="w-full p-2 rounded-lg border border-slate-300 focus:ring-2 focus:ring-brand-blue/20 focus:border-brand-blue outline-none"
+                    value={formData.branchId || ''}
+                    onChange={e => setFormData({ ...formData, branchId: e.target.value })}
+                >
+                    <option value="">Seleccionar...</option>
+                    {availableBranches.map(branch => (
+                        <option key={branch.id} value={branch.id}>{branch.name}</option>
+                    ))}
+                </select>
+            </div>
           </div>
 
           <div>

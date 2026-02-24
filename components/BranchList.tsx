@@ -135,32 +135,6 @@ const BranchList: React.FC<BranchListProps> = ({ currentUser }) => {
                     </div>
                  </div>
               ))}
-
-              {specialists.map(specialist => (
-                <div key={specialist.id} className="p-4 hover:bg-slate-50 transition-colors flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <img 
-                      src={specialist.avatarUrl} 
-                      alt={specialist.firstName} 
-                      className="w-10 h-10 rounded-full bg-slate-200"
-                    />
-                    <div>
-                      <p className="font-medium text-slate-900">{specialist.firstName} {specialist.lastName}</p>
-                      <p className="text-xs text-slate-500">Consulta Virtual Personal</p>
-                    </div>
-                  </div>
-                  <a 
-                    href="https://meet.google.com/abc-defg-hij" 
-                    target="_blank" 
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-sm text-brand-blue hover:underline bg-blue-50 px-3 py-1.5 rounded-lg"
-                  >
-                    <Video size={16} />
-                    <span>Unirse a Meet</span>
-                    <ExternalLink size={14} />
-                  </a>
-                </div>
-              ))}
             </div>
           </div>
         </div>

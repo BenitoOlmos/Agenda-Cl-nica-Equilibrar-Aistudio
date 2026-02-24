@@ -58,6 +58,7 @@ export interface Patient {
   healthSystem: 'FONASA' | 'ISAPRE' | 'PARTICULAR';
   isapreName?: string; // Solo si es ISAPRE
   complementaryInsurance?: string;
+  paymentIds?: string[]; // Vínculo a pagos generados
 }
 
 // Ficha Clínica (Ley N° 20.584)
@@ -85,6 +86,8 @@ export interface Specialist extends User {
   bio: string;
   color: string; // Para el calendario
   phone?: string;
+  performedServiceIds?: string[]; // Vínculo a servicios realizados
+  treatedPatientIds?: string[]; // Vínculo a pacientes tratados
 }
 
 // Servicio Clínico
@@ -109,6 +112,7 @@ export interface Appointment {
   dateEnd: string; // ISO 8601 UTC string
   status: AppointmentStatus;
   paymentStatus: PaymentStatus;
+  paymentMethod?: PaymentMethod;
   meetLink?: string; // Para citas Online
   notes?: string;
 }

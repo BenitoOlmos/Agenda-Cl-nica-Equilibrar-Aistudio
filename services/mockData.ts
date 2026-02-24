@@ -32,9 +32,27 @@ export const BRANCHES: Branch[] = [
   },
   {
     id: 'br-virtual',
-    name: 'Sucursal Virtual',
+    name: 'Sucursal Virtual General',
     type: 'VIRTUAL',
     meetLink: 'https://meet.google.com/abc-defg-hij'
+  },
+  {
+    id: 'br-virtual-psiquiatria',
+    name: 'Sucursal Virtual Psiquiatría',
+    type: 'VIRTUAL',
+    meetLink: 'https://meet.google.com/psi-quia-tria'
+  },
+  {
+    id: 'br-virtual-psicologia',
+    name: 'Sucursal Virtual Psicología',
+    type: 'VIRTUAL',
+    meetLink: 'https://meet.google.com/psi-colo-gia'
+  },
+  {
+    id: 'br-virtual-neuro',
+    name: 'Sucursal Virtual Neurociencia',
+    type: 'VIRTUAL',
+    meetLink: 'https://meet.google.com/neu-ro-cien'
   }
 ];
 
@@ -48,7 +66,7 @@ export const SERVICES: Service[] = [
     type: ServiceType.ONLINE,
     description: 'Sesión individual online.',
     specialistId: 'usr-spec-2',
-    branchId: 'br-virtual'
+    branchId: 'br-virtual-psicologia'
   },
   {
     id: 'svc-2',
@@ -78,7 +96,7 @@ export const SERVICES: Service[] = [
     type: ServiceType.ONLINE,
     description: 'Sesión de psiquiatría online.',
     specialistId: 'usr-spec-3',
-    branchId: 'br-virtual'
+    branchId: 'br-virtual-psiquiatria'
   },
   {
     id: 'svc-5',
@@ -98,7 +116,7 @@ export const SERVICES: Service[] = [
     type: ServiceType.ONLINE,
     description: 'Sesión de psicología online.',
     specialistId: 'usr-spec-4',
-    branchId: 'br-virtual'
+    branchId: 'br-virtual-psicologia'
   },
   {
     id: 'svc-7',
@@ -118,7 +136,7 @@ export const SERVICES: Service[] = [
     type: ServiceType.ONLINE,
     description: 'Sesión de neurociencia online.',
     specialistId: 'usr-spec-5',
-    branchId: 'br-virtual'
+    branchId: 'br-virtual-neuro'
   },
   {
     id: 'svc-9',
